@@ -5,8 +5,10 @@
 http://www.di.ens.fr/~mschmidt/Software/minConf.html
 
 LBFGS用于求解大规模的优化问题，已经被广泛的应用在各种机器学习问题中。关于LBFGS的相关内容可以参见下面两个链接：
+
 http://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm
 http://www.codelast.com/?p=2780
+
 main.cpp是一个测试用例，数据集数量为250，选用其中150个作为训练集，其余的作为测试集。
 
 关于这个程序我写了一个详细的文档，不久会发到网上~
