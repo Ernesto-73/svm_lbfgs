@@ -5,6 +5,29 @@
 */ 
 #include "svm.h"
 
+double dualSVMLoss_noBias(int n, const double *alpha, const double *A, double *g)
+{
+	double f = 0;
+	int step = n;
+	
+	double sum = 0;
+	for(int i = 0; i < n;i++)
+		sum += alpha[i];
+		
+	for(int i = 0 ;i < n ;i++)
+	{
+		double sc = 0;
+		for(int j = 0;j < n;j++)
+		{
+			sc += alpha[j] * A[j * step + i];
+		}
+		g[i] = sc - 1;
+		f += sc * alpha[i];
+	}
+	f = f * 0.5 - sum;
+	return f;
+}
+
 SVM::SVM()
 {
 	std::cerr<<"Must have parameters."<<std::endl;
@@ -20,7 +43,7 @@ SVM::SVM(double *_input, double *_response, int _nVars, int _nInstances, SVMOpt 
 	opt = _opt;
 }
 
-/* \def kernelRBF
+/* \define kernelRBF
 * RBF kernel for support vector machine.
 */
 Array SVM::kernelRBF(Array &X1, Array &X2, double sigma)
@@ -50,7 +73,7 @@ Array SVM::kernelRBF(Array &X1, Array &X2, double sigma)
 	return XX;
 }
 
-/* \def kernelLinear
+/* \define kernelLinear
 * Linear kernel for support vector machine.
 */
 Array SVM::kernelLinear(Array &X1, Array &X2)
@@ -73,7 +96,7 @@ Array SVM::kernelLinear(Array &X1, Array &X2)
 	return XX;
 }
 
-/* \def getTrainErr
+/* \define getTrainErr
 * Calculate the train error of SVM.
 */
 double SVM::getTrainErr(Array &alpha, Array &y, Array &K)
@@ -160,6 +183,7 @@ double SVM::train()
 
 	minConf_TMP trainer(x, LB, UB, &(opt->minconf_opt));
 	trainer.loadData(nInstances, nInstances, _A, _y);
+	trainer.setFunObj(&dualSVMLoss_noBias);
 	trainer.process();
 	
 	trainErr = getTrainErr(x, y, K);

@@ -12,14 +12,14 @@
 #include <cmath>
 
 /*
-* \def inline min & max
+* \define inline min & max
 */
 inline double min(double a, double b) {return a > b? b:a;}
 
 inline double max(double a, double b) {return a > b? a:b;}
 
 /*
-* \def Triple structure
+* \define Triple structure
 * This double triplet is used for polynomial interpolation.
 */
 typedef struct{
@@ -29,13 +29,13 @@ typedef struct{
 }Triple;
 
 /*
-* \def polyInterp(std::vector<Triple> &options)
+* \define polyInterp(std::vector<Triple> &options)
 * Solve polynomial interpolation with more than one points.
 */
 double polyInterp(std::vector<Triple> &pionts);
 
 /*
-* \def polyInterp(double x1, double f1, double g1, double x2, double f2, double g2)
+* \define polyInterp(double x1, double f1, double g1, double x2, double f2, double g2)
 * Solve polynomial interpolation with two points.
 */
 double polyInterp(double x1, double f1, double g1, double x2, double f2, double g2);

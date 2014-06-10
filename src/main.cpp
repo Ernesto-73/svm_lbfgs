@@ -62,7 +62,7 @@ int main()
 	std::cout<<std::endl;
 	
 	// train
-	SVMOpt opt(SVM_RBF, 1., 1.);
+	SVMOpt opt(SVM_RBF, 100., 1.);
 	SVM svm(XTrain, yTrain, nVars, nTrain, &opt);
 	std::cout<<"Train Error:"<<svm.train()<<std::endl;
 	

@@ -15,10 +15,14 @@
 #include "array.h"
 #include "polyinterp.h"
 
+inline double abs(double x) { return x >= 0 ? x : -x;}
+
+typedef double (*FuncObj)(int , const double *, const double *, double *);
 /*	
 * \define structure Options
 */
 enum{SD = 0, LBFGS, BFGS, NEWTON};
+
 typedef struct Options{
 	/*
 		Default Options
@@ -45,15 +49,15 @@ typedef struct Options{
 
 }Options;
 
-double LogisticLoss(int nInstance, int dim, const double *w, const double *X, const double *y, double *g, double *H = NULL);
-
 /*	
 * \define class minConf_TMP
 */
 class minConf_TMP
 {
 public:
-	/* Constructors */
+	/* 
+		constructors 
+	*/
 	minConf_TMP();
 	
 	/*
@@ -66,21 +70,33 @@ public:
 	
 	minConf_TMP(Array _x, Array _LB, Array _UB, Options *_opt);	
 	
-	/* Destructor */
+	/* 
+		destructor 
+	*/
 	~minConf_TMP();
 	
-	/* main function */
+	/* 
+		main process function 
+	*/
 	void process();
 	
+	/* 
+		set the objective function 
+	*/
+	void setFunObj(FuncObj _ff);
+	
+	/* 
+		load train data and responses 
+	*/
 	void loadData(int _nInstance, int _dim, double *_input, double *_output);
 private:
 	/*
-		Compute Working Set.
+		compute working set.
 	*/
 	void computeWorkingSet();
 	
 	/*
-		Constrain x integer the [LB, UB].
+		constrain x integer the [LB, UB], implement two metric projection.
 	*/
 	void projectBounds(Array *_x = NULL);
 	
@@ -89,7 +105,9 @@ private:
 	void lbfgsUpdate(const Array &y, const Array &s, int corrections, std::deque<Array> &old_dirs, std::deque<Array> &old_stps, double &Hdiag);
 		
 	double funObj(Array &x, Array &g);
-		
+	
+	FuncObj func;
+	
 	Options *opt;	// Parameters
 	Array LB;
 	Array UB;	

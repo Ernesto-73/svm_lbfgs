@@ -60,4 +60,7 @@ private:
 	Array kernelRBF(Array &X1, Array &X2, double sigma);
 	Array kernelLinear(Array &X1, Array &X2);
 };
+
+double dualSVMLoss_noBias(int n, const double *alpha, const double *A, double *g);
+
 #endif

@@ -6,37 +6,17 @@
 
 #include "minconf_tmp.h"
 
-inline double abs(double x) { return x >= 0 ? x : -x;}
-
-double dualSVMLoss_noBias(int n, const double *alpha, const double *A, double *g)
-{
-	double f = 0;
-	int step = n;
-	
-	double sum = 0;
-	for(int i = 0; i < n;i++)
-		sum += alpha[i];
-		
-	for(int i = 0 ;i < n ;i++)
-	{
-		double sc = 0;
-		for(int j = 0;j < n;j++)
-		{
-			sc += alpha[j] * A[j * step + i];
-		}
-		g[i] = sc - 1;
-		f += sc * alpha[i];
-	}
-	f = f * 0.5 - sum;
-	return f;
-}
-
 double minConf_TMP::funObj(Array &x, Array &g)
 {
 	double *_g = g.getData();
 	const double *_x = x.getData();
 	assert(_g && _x);
-	return dualSVMLoss_noBias(nInstance, _x, input, _g);
+	return (*func)(nInstance, _x, input, _g);
+}
+
+void minConf_TMP::setFunObj(FuncObj _ff)
+{
+	func = _ff;
 }
 
 minConf_TMP::minConf_TMP(Array _x, Array _LB, Array _UB)

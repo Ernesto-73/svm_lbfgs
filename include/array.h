@@ -13,7 +13,7 @@
 #include <vector>
 
 /*
-* \def class Array: data structure
+* \define class Array: data structure
 */
 class Array{
 public:
